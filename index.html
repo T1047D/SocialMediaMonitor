@@ -108,6 +108,62 @@
 </section>
       
 
+<!-- SOURCE MANAGER -->
+
+<section class="panel" id="monitoringSection" hidden>
+
+  <div class="section-heading">
+    <h2>Manage Sources</h2>
+    <span class="coming-soon">Source Manager</span>
+  </div>
+
+  <form id="sourceForm">
+
+    <label for="sourcePlatform">Select Platform</label>
+
+    <select id="sourcePlatform" required>
+      <option value="facebook">Facebook</option>
+      <option value="x">X (Twitter)</option>
+    </select>
+
+    <label for="sourceName">Source Name</label>
+
+    <input
+      type="text"
+      id="sourceName"
+      placeholder="Example: News Page"
+      required
+    >
+
+    <label for="sourceUrl">Profile / Page URL</label>
+
+    <input
+      type="url"
+      id="sourceUrl"
+      placeholder="https://www.facebook.com/..."
+      required
+    >
+
+    <button type="submit" id="addSourceBtn">
+      Add Source
+    </button>
+
+  </form>
+
+  <p id="sourceMessage"></p>
+
+  <div class="section-heading" style="margin-top:25px">
+    <h2>My Sources</h2>
+  </div>
+
+  <div id="sourceList" class="empty-state">
+    <p>No sources added yet.</p>
+  </div>
+
+</section>
+
+<!-- END SOURCE MANAGER -->
+      
       <section class="welcome">
         <h2>Welcome Back 👋</h2>
         <p>Track new posts from your selected social media sources.</p>
