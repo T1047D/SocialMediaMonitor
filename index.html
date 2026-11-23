@@ -1,1 +1,124 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+
+  <title>Social Media Monitor</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <header class="header">
+      <div>
+        <h1>Social Monitor</h1>
+        <p>Monitor your social media activity</p>
+      </div>
+
+      <div class="status">
+        <span class="status-dot"></span>
+        System Ready
+      </div>
+    </header>
+
+    <main>
+
+      <section class="welcome">
+        <h2>Welcome Back 👋</h2>
+        <p>Track new posts from your selected social media sources.</p>
+      </section>
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+          <span>Total Sources</span>
+          <h2 id="totalSources">0</h2>
+        </div>
+
+        <div class="stat-card">
+          <span>Total Posts</span>
+          <h2 id="totalPosts">0</h2>
+        </div>
+
+        <div class="stat-card">
+          <span>Facebook Sources</span>
+          <h2 id="facebookSources">0</h2>
+        </div>
+
+        <div class="stat-card">
+          <span>X Sources</span>
+          <h2 id="xSources">0</h2>
+        </div>
+
+      </section>
+
+      <section class="panel">
+
+        <div class="section-heading">
+          <h2>Social Media Sources</h2>
+          <span class="coming-soon">Setup</span>
+        </div>
+
+        <div class="platform-grid">
+
+          <div class="platform-card facebook">
+            <h3>Facebook</h3>
+            <p>Monitor authorized public Pages.</p>
+            <button disabled>Connect Facebook</button>
+          </div>
+
+          <div class="platform-card twitter">
+            <h3>X (Twitter)</h3>
+            <p>Monitor API-accessible public posts.</p>
+            <button disabled>Connect X</button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="panel">
+
+        <div class="section-heading">
+          <h2>Recent Posts</h2>
+          <span class="coming-soon">No posts yet</span>
+        </div>
+
+        <div id="postList" class="empty-state">
+          <p>No posts detected yet.</p>
+          <small>Your monitored posts will appear here.</small>
+        </div>
+
+      </section>
+
+      <section class="panel">
+
+        <h2>Email Notifications</h2>
+
+        <div class="email-box">
+          <p>Email notification setup will be available soon.</p>
+          <span>Not connected</span>
+        </div>
+
+      </section>
+
+    </main>
+
+    <footer>
+      <p>Social Media Monitor © 2026</p>
+      <small>Facebook & X Monitoring Dashboard</small>
+    </footer>
+
+  </div>
+
+  <script type="module" src="app.js"></script>
+
+</body>
+                                       </html>
+                                       
