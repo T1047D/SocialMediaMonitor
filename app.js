@@ -268,6 +268,7 @@ editBtn.addEventListener("click", () => {
   sourceForm.dataset.editId = sourceDoc.id;
 
   addSourceBtn.textContent = "Update Source";
+  cancelEditBtn.hidden = false;
   sourceMessage.textContent = "Editing: " + source.name;
 
   document.getElementById("sourceName").focus();
