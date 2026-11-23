@@ -325,6 +325,22 @@ sourceForm.addEventListener("submit", async (event) => {
   sourceMessage.textContent = "Saving source...";
 
   try {
+  const editId = sourceForm.dataset.editId;
+
+  if (editId) {
+    await updateDoc(
+      doc(db, "users", currentUser.uid, "sources", editId),
+      {
+        platform,
+        name,
+        url,
+        updatedAt: serverTimestamp()
+      }
+    );
+
+    sourceMessage.textContent = "Source updated successfully!";
+
+  } else {
     await addDoc(
       collection(db, "users", currentUser.uid, "sources"),
       {
@@ -335,8 +351,14 @@ sourceForm.addEventListener("submit", async (event) => {
       }
     );
 
-    sourceForm.reset();
     sourceMessage.textContent = "Source added successfully!";
+  }
+
+  sourceForm.reset();
+  delete sourceForm.dataset.editId;
+  addSourceBtn.textContent = "Add Source";
+
+  }
 
   } catch (error) {
     sourceMessage.textContent = error.message;
