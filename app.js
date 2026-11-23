@@ -256,6 +256,22 @@ function renderSources(snapshot) {
     link.textContent = "Open Source";
     link.target = "_blank";
     link.rel = "noopener noreferrer";
+    const editBtn = document.createElement("button");
+editBtn.type = "button";
+editBtn.textContent = "Edit Source";
+
+editBtn.addEventListener("click", () => {
+  document.getElementById("sourcePlatform").value = source.platform;
+  document.getElementById("sourceName").value = source.name;
+  document.getElementById("sourceUrl").value = source.url;
+
+  sourceForm.dataset.editId = sourceDoc.id;
+
+  addSourceBtn.textContent = "Update Source";
+  sourceMessage.textContent = "Editing: " + source.name;
+
+  document.getElementById("sourceName").focus();
+});
 
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
@@ -276,8 +292,7 @@ function renderSources(snapshot) {
         sourceMessage.textContent = error.message;
       }
     });
-
-    card.append(title, platform, link, deleteBtn);
+    card.append(title, platform, link, editBtn, deleteBtn);
     sourceList.appendChild(card);
   });
 }
