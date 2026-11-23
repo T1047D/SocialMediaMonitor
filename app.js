@@ -360,7 +360,6 @@ sourceForm.addEventListener("submit", async (event) => {
   delete sourceForm.dataset.editId;
   addSourceBtn.textContent = "Add Source";
 
-  }
 
   } catch (error) {
     sourceMessage.textContent = error.message;
