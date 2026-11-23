@@ -28,6 +28,84 @@
     </header>
 
     <main>
+      
+<section id="authSection" class="panel">
+
+  <div class="section-heading">
+    <h2>Account Access</h2>
+  </div>
+
+  <div id="loginForm">
+
+    <h3>Welcome Back</h3>
+    <p>Login to your Social Monitor account.</p>
+
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="Email address"
+      autocomplete="email"
+    >
+
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Password"
+      autocomplete="current-password"
+    >
+
+    <button id="loginBtn" type="button">
+      Login
+    </button>
+
+    <p>
+      Don't have an account?
+      <a href="#" id="showRegister">Create Account</a>
+    </p>
+
+  </div>
+
+  <div id="registerForm" hidden>
+
+    <h3>Create New Account</h3>
+    <p>Register to start monitoring social media.</p>
+
+    <input
+      type="text"
+      id="registerName"
+      placeholder="Your name"
+      autocomplete="name"
+    >
+
+    <input
+      type="email"
+      id="registerEmail"
+      placeholder="Email address"
+      autocomplete="email"
+    >
+
+    <input
+      type="password"
+      id="registerPassword"
+      placeholder="Create password (minimum 6 characters)"
+      autocomplete="new-password"
+    >
+
+    <button id="registerBtn" type="button">
+      Create Account
+    </button>
+
+    <p>
+      Already have an account?
+      <a href="#" id="showLogin">Login</a>
+    </p>
+
+  </div>
+
+  <p id="authMessage"></p>
+
+</section>
+      
 
       <section class="welcome">
         <h2>Welcome Back 👋</h2>
