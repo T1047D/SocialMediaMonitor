@@ -128,24 +128,45 @@ loginBtn.addEventListener("click", async () => {
 
 });
 
+
 // Authentication state
+const userPanel = document.getElementById("userPanel");
+
 onAuthStateChanged(auth, (user) => {
 
   if (user) {
 
-    authSection.innerHTML = `
+    loginForm.hidden = true;
+    registerForm.hidden = true;
+    authMessage.textContent = "";
+    userPanel.hidden = false;
+
+    userPanel.innerHTML = `
       <h2>Welcome, ${user.displayName || "User"}!</h2>
       <p>${user.email}</p>
       <button id="logoutBtn">Logout</button>
     `;
 
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await signOut(auth);
-    });
+    document.getElementById("logoutBtn").addEventListener(
+      "click",
+      async () => {
+        try {
+          await signOut(auth);
+        } catch (error) {
+          authMessage.textContent = error.message;
+        }
+      }
+    );
 
   } else {
 
+    userPanel.hidden = true;
+    userPanel.innerHTML = "";
+
     authSection.style.display = "block";
+
+    loginForm.hidden = false;
+    registerForm.hidden = true;
 
   }
 
