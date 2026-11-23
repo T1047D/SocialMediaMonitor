@@ -220,6 +220,16 @@ function isValidSourceUrl(platform, url) {
 
 // Display sources
 function renderSources(snapshot) {
+    const allSources = snapshot.docs.map(doc => doc.data());
+
+  document.getElementById("totalSources").textContent =
+    allSources.length;
+
+  document.getElementById("facebookSources").textContent =
+    allSources.filter(source => source.platform === "facebook").length;
+
+  document.getElementById("xSources").textContent =
+    allSources.filter(source => source.platform === "x").length;
   sourceList.replaceChildren();
 
   if (snapshot.empty) {
