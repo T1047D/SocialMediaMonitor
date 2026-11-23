@@ -6,7 +6,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCdp168ghQwiG1IRFmkJC-e2SfwkynpH8",
+  apiKey: "AIzaSyCdp168ghQwiG1IRFmkJC-e2Sfwkyn8pH8",
   authDomain: "socialmediamonitor-4d326.firebaseapp.com",
   projectId: "socialmediamonitor-4d326",
   storageBucket: "socialmediamonitor-4d326.firebasestorage.app",
