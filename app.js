@@ -190,7 +190,7 @@ const sourceForm = document.getElementById("sourceForm");
 const sourceList = document.getElementById("sourceList");
 const sourceMessage = document.getElementById("sourceMessage");
 const addSourceBtn = document.getElementById("addSourceBtn");
-
+const cancelEditBtn = document.getElementById("cancelEditBtn");
 let currentUser = null;
 let unsubscribeSources = null;
 
