@@ -404,3 +404,13 @@ onAuthStateChanged(auth, (user) => {
 });
 
 console.log("Source Manager initialized.");
+cancelEditBtn.addEventListener("click", () => {
+  sourceForm.reset();
+
+  delete sourceForm.dataset.editId;
+
+  addSourceBtn.textContent = "Add Source";
+  cancelEditBtn.hidden = true;
+
+  sourceMessage.textContent = "Edit cancelled.";
+});
