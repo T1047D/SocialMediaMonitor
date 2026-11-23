@@ -178,3 +178,181 @@ onAuthStateChanged(auth, (user) => {
 });
 
 console.log("Authentication system initialized.");
+
+
+// =================================
+// SOURCE MANAGER
+// =================================
+
+const monitoringSection = document.getElementById("monitoringSection");
+const sourceForm = document.getElementById("sourceForm");
+const sourceList = document.getElementById("sourceList");
+const sourceMessage = document.getElementById("sourceMessage");
+const addSourceBtn = document.getElementById("addSourceBtn");
+
+let currentUser = null;
+let unsubscribeSources = null;
+
+// Validate supported social media URLs
+function isValidSourceUrl(platform, url) {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+
+    if (platform === "facebook") {
+      return host === "facebook.com" ||
+             host.endsWith(".facebook.com");
+    }
+
+    if (platform === "x") {
+      return host === "x.com" ||
+             host.endsWith(".x.com") ||
+             host === "twitter.com" ||
+             host.endsWith(".twitter.com");
+    }
+
+    return false;
+
+  } catch {
+    return false;
+  }
+}
+
+// Display sources
+function renderSources(snapshot) {
+  sourceList.replaceChildren();
+
+  if (snapshot.empty) {
+    sourceList.textContent = "No sources added yet.";
+    return;
+  }
+
+  snapshot.forEach((sourceDoc) => {
+    const source = sourceDoc.data();
+
+    const card = document.createElement("div");
+    card.className = "platform-card";
+
+    const title = document.createElement("h3");
+    title.textContent = source.name;
+
+    const platform = document.createElement("p");
+    platform.textContent =
+      source.platform === "facebook" ? "Facebook" : "X (Twitter)";
+
+    const link = document.createElement("a");
+    link.href = source.url;
+    link.textContent = "Open Source";
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.textContent = "Delete Source";
+
+    deleteBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+
+      if (!confirm("Delete this source?")) return;
+
+      try {
+        await deleteDoc(
+          doc(db, "users", currentUser.uid, "sources", sourceDoc.id)
+        );
+        sourceMessage.textContent = "Source deleted successfully.";
+
+      } catch (error) {
+        sourceMessage.textContent = error.message;
+      }
+    });
+
+    card.append(title, platform, link, deleteBtn);
+    sourceList.appendChild(card);
+  });
+}
+
+// Add new source
+sourceForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!currentUser) {
+    sourceMessage.textContent = "Please login first.";
+    return;
+  }
+
+  const platform = document.getElementById("sourcePlatform").value;
+  const name = document.getElementById("sourceName").value.trim();
+  const url = document.getElementById("sourceUrl").value.trim();
+
+  if (!name || !url) {
+    sourceMessage.textContent = "Please fill in all fields.";
+    return;
+  }
+
+  if (!isValidSourceUrl(platform, url)) {
+    sourceMessage.textContent =
+      "Please enter a valid Facebook or X URL.";
+    return;
+  }
+
+  addSourceBtn.disabled = true;
+  sourceMessage.textContent = "Saving source...";
+
+  try {
+    await addDoc(
+      collection(db, "users", currentUser.uid, "sources"),
+      {
+        platform,
+        name,
+        url,
+        createdAt: serverTimestamp()
+      }
+    );
+
+    sourceForm.reset();
+    sourceMessage.textContent = "Source added successfully!";
+
+  } catch (error) {
+    sourceMessage.textContent = error.message;
+
+  } finally {
+    addSourceBtn.disabled = false;
+  }
+});
+
+// Load sources for logged-in user
+onAuthStateChanged(auth, (user) => {
+
+  currentUser = user;
+
+  if (unsubscribeSources) {
+    unsubscribeSources();
+    unsubscribeSources = null;
+  }
+
+  if (!user) {
+    monitoringSection.hidden = true;
+    return;
+  }
+
+  monitoringSection.hidden = false;
+
+  const sourcesRef = collection(
+    db,
+    "users",
+    user.uid,
+    "sources"
+  );
+
+  unsubscribeSources = onSnapshot(
+    sourcesRef,
+    renderSources,
+    (error) => {
+      sourceMessage.textContent =
+        "Could not load sources: " + error.message;
+    }
+  );
+
+});
+
+console.log("Source Manager initialized.");
