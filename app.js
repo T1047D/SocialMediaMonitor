@@ -356,6 +356,7 @@ sourceForm.addEventListener("submit", async (event) => {
   }
 
   sourceForm.reset();
+  cancelEditBtn.hidden = true;
   delete sourceForm.dataset.editId;
   addSourceBtn.textContent = "Add Source";
 
