@@ -17,7 +17,8 @@ import {
   collection,
   addDoc,
   onSnapshot,
-  deleteDoc
+  deleteDoc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
 // Elements
