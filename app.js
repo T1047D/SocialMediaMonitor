@@ -1,59 +1,154 @@
 
-const totalSources = document.getElementById("totalSources");
-const totalPosts = document.getElementById("totalPosts");
-const facebookSources = document.getElementById("facebookSources");
-const xSources = document.getElementById("xSources");
+import { auth, db } from "./firebase-config.js";
 
-const postList = document.getElementById("postList");
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
-// Initial dashboard data
-let sources = [];
-let posts = [];
+import {
+  doc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-// Update dashboard statistics
-function updateDashboard() {
+// Elements
+const authSection = document.getElementById("authSection");
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+const authMessage = document.getElementById("authMessage");
 
-  totalSources.textContent = sources.length;
+const showRegister = document.getElementById("showRegister");
+const showLogin = document.getElementById("showLogin");
 
-  totalPosts.textContent = posts.length;
+const loginBtn = document.getElementById("loginBtn");
+const registerBtn = document.getElementById("registerBtn");
 
-  facebookSources.textContent = sources.filter(
-    source => source.platform === "facebook"
-  ).length;
+// Switch forms
+showRegister.addEventListener("click", (e) => {
+  e.preventDefault();
 
-  xSources.textContent = sources.filter(
-    source => source.platform === "x"
-  ).length;
+  loginForm.hidden = true;
+  registerForm.hidden = false;
+  authMessage.textContent = "";
+});
 
-}
+showLogin.addEventListener("click", (e) => {
+  e.preventDefault();
 
-// Render recent posts
-function renderPosts() {
+  registerForm.hidden = true;
+  loginForm.hidden = false;
+  authMessage.textContent = "";
+});
 
-  if (posts.length === 0) {
+// Registration
+registerBtn.addEventListener("click", async () => {
 
-    postList.innerHTML = `
-      <p>No posts detected yet.</p>
-      <small>Your monitored posts will appear here.</small>
-    `;
+  const name = document.getElementById("registerName").value.trim();
+  const email = document.getElementById("registerEmail").value.trim();
+  const password = document.getElementById("registerPassword").value;
 
+  if (!name || !email || !password) {
+    authMessage.textContent = "Please fill in all fields.";
     return;
+  }
+
+  if (password.length < 6) {
+    authMessage.textContent = "Password must be at least 6 characters.";
+    return;
+  }
+
+  registerBtn.disabled = true;
+  authMessage.textContent = "Creating account...";
+
+  try {
+
+    const result = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    await updateProfile(result.user, {
+      displayName: name
+    });
+
+    await setDoc(doc(db, "users", result.user.uid), {
+      name: name,
+      email: email,
+      createdAt: serverTimestamp()
+    });
+
+    authMessage.textContent = "Account created successfully!";
+
+  } catch (error) {
+
+    authMessage.textContent = error.message;
+
+  } finally {
+
+    registerBtn.disabled = false;
 
   }
 
-  postList.innerHTML = posts.map(post => `
-    <div class="platform-card">
-      <h3>${post.platform}</h3>
-      <p>${post.text}</p>
-      <small>${post.date}</small>
-    </div>
-  `).join("");
+});
 
-}
+// Login
+loginBtn.addEventListener("click", async () => {
 
-// Initial render
-updateDashboard();
-renderPosts();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
 
-console.log("Social Media Monitor initialized successfully.");
-    
+  if (!email || !password) {
+    authMessage.textContent = "Enter email and password.";
+    return;
+  }
+
+  loginBtn.disabled = true;
+  authMessage.textContent = "Logging in...";
+
+  try {
+
+    await signInWithEmailAndPassword(auth, email, password);
+
+    authMessage.textContent = "Login successful!";
+
+  } catch (error) {
+
+    authMessage.textContent = error.message;
+
+  } finally {
+
+    loginBtn.disabled = false;
+
+  }
+
+});
+
+// Authentication state
+onAuthStateChanged(auth, (user) => {
+
+  if (user) {
+
+    authSection.innerHTML = `
+      <h2>Welcome, ${user.displayName || "User"}!</h2>
+      <p>${user.email}</p>
+      <button id="logoutBtn">Logout</button>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+    });
+
+  } else {
+
+    authSection.style.display = "block";
+
+  }
+
+});
+
+console.log("Authentication system initialized.");
